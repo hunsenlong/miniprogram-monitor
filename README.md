@@ -105,3 +105,5 @@ wx.login({
 <font color="red">注意：需要安装在 小程序后台服务 操作系统</font>
 - 效果展示
 ![](./docs/images/end%20to%20end.png)
+## 联系我们
+[深圳市卓越方达科技有限公司](https://www.zonefound.com.cn/)
