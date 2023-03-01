@@ -6,15 +6,23 @@
 
 ## 功能介绍
 
-### 用户行为分析
-### 页面渲染速率分析
-### 用户操作分析
-### JS 错误监控
-### 用户体验评分
-### 地域运营商监控
-### 操作系统信息分析
-### 用户网络情况监控
-### 
+- ### **用户行为分析**
+可视化分析小程序流量流向与性能，全面掌控用户来源渠道和用户转化。
+- ### **页面渲染速率分析**
+通过真实用户监控访问页面的展现速率（包括首次渲染时间、首次加载完成时间、卡顿次数等），基于问题定位指导优化。
+- ### **用户操作分析**
+告别繁琐埋点，自动识别网站操作点击事件监控操作次数、响应时间和可用性，同时监控用户操作流程，保障业务稳定运行。
+- ### **JS 错误监控**
+监控JS错误率趋势，同时可代码级定位JS错误所在页面或者脚本URL，出错的行列、堆栈等信息，同时还支持SourceMap，可还原压缩JS错误代码行列。
+- ### **用户体验评分**
+
+基于小程序性能的onReday、加载耗时、请求耗时、请求错误、JS错误、操作时间、操作可用性等多项核心指标进行多维度智能化评分，数字化衡量小程序性能。
+
+- ### **地域运营商监控**
+可分析不同区域（包括国家、省份、城市）、运营商以及接入方式（包括2G/3G/4G/WiFi）下的各关键网络性能指标，快速定位网络问题。
+- ### **操作系统信息分析**
+- ### **用户网络情况监控**
+
 ## 使用
 ### 创建 Custom Application
 - 开始创建
@@ -38,6 +46,9 @@ DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版�
 #### 定义用户属性与操作属性
 - 编辑 Application 并打开 `Session and user action properties`
 ![](./docs/images/session%20and%20user%20action%20properties.jpg)
+- 点击 `Add property` 进行添加
+![](./docs/images/session%20and%20user%20action%20properties_1.jpg)
+
 
 ## API
 ### `init`
@@ -57,6 +68,7 @@ Monitor.excludeApis(['/api/v1/xxx', '/api/v1/xxx']);
 Monitor.init();
 ```
 ### `identifyUser(userId)`
+给当前 session 标记用户
 ```javascript
 getApp().identifyUser('xxxxx');
 ```
@@ -70,9 +82,9 @@ wx.login({
 ```
 
 ### `reportValue(name, value)`
-可在当前 Page action 里定义 reportValue 
+可在当前 Page action 里定义 reportValue。 参考 [定义用户属性与操作属性](#定义用户属性与操作属性)
 ```javascript
-wx.GetCurrentPM().reportValue('xxxxx');
+wx.GetCurrentPM().reportValue('name', 'value');
 ```
 示例: 上报用户登录耗时
 ```javascript
@@ -84,5 +96,10 @@ wx.login({
     }
 })
 ```
-
-## 示例
+<font color="red">注意：该API 调用 `scope` 仅限于 onLoad、onShow、onReady</font>
+## 端到端配置
+### 安装 Dynatrace 探针
+- 登录Dynatrace后台管理系统。打开菜单 `Manage` > `Deploy Dynatrace`
+![](./docs/images/deploy%20dynatrace.jpg)
+<font color="red">注意：需要安装在 小程序后台服务 操作系统</font>
+- 效果展示
