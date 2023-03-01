@@ -3,6 +3,7 @@
 ![](https://img.shields.io/badge/node-16.x-green) ![](https://img.shields.io/badge/npm-8.x-brightgreen) ![](https://img.shields.io/badge/code%20size-105%20kb-blue)
 
 ## 简介
+    从2017年微信首次推出小程序开始，经过四年多发展，截至2021年上半年，全网小程序数量突破700万个，呈逐年增长的趋势。Dynatrace的产品目前还没有支持微信小程序，没办法监控小程序的性能，为了弥补这方面的空白，我们开发了这个前端小程序探针—Wechat Miniprogram Monitoring，以便满足中国客户在这方面迫切的需求。
 
 ## 功能介绍
 
