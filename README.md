@@ -22,10 +22,11 @@
 可分析不同区域（包括国家、省份、城市）、运营商以及接入方式（包括2G/3G/4G/WiFi）下的各关键网络性能指标，快速定位网络问题。
 - ### **操作系统信息分析**
 - ### **用户网络情况监控**
-
+## 更新记录
+请参考 [更新记录](./CHANGE.md)
 ## 使用
 ### 创建 Custom Application
-- 开始创建
+- 点击 `Create custom application` 开始创建
 ![](./docs/images/Create%20custom%20application.jpg)
 - 输入 Application Name
 ![](./docs/images/Create%20custom%20application_1.jpg)
@@ -103,3 +104,4 @@ wx.login({
 ![](./docs/images/deploy%20dynatrace.jpg)
 <font color="red">注意：需要安装在 小程序后台服务 操作系统</font>
 - 效果展示
+![](./docs/images/end%20to%20end.png)
