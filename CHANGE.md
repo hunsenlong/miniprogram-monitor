@@ -7,7 +7,8 @@
 - 优化JS描点包体积 目前为（`105kb`）
 - 删除 Action 中 SetData 事件。优化为 监控SetData 耗时 以及对应少部分数据捕获
 - 新增接口 `excludeApis(apis[])` 用于添加不需要监控的API接口
-- 新增 wx.request 的 timeout 配置。默认为 60000
+- 新增 当前SDK wx.request 的 timeout 配置。默认为 60000
+- 增加 配置 timeout 接口 `requestTimeout(timeout=60000)`
 
 ## **1.0.0**
 - 简化部署流程，无需要使用NPM 安装扩展依赖插件

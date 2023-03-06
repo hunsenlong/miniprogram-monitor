@@ -71,6 +71,13 @@ const Monitor = DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小�
 Monitor.excludeApis(['/api/v1/xxx', '/api/v1/xxx']);
 Monitor.init();
 ```
+### `requestTimeout(timeout=60000)`
+设置 当前SDK 的所有请求超时时间
+```javascript
+const Monitor = DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版本');
+Monitor.requestTimeout(6000);
+Monitor.init();
+```
 ### `identifyUser(userId)`
 给当前 session 标记用户
 ```javascript
