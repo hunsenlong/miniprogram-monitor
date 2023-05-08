@@ -44,7 +44,7 @@ DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版�
 ```
 根据实际的 applicationName 与 applicationID、BeaconURL 替换对应内容。可参考 [创建 Custom Application](#创建-custom-application)
 #### <font color="red">* UNI vue3 安装描点 注意事项</font>
-- vue3 不支持 commonjs，需要在vite.config.js 配置 commonjs
+- uniapp 的 vue 3版本将不再支持 commonJS 语法，需要在vite.config.js 配置 commonjs
 - 使用 npm 安装 `rollup-plugin-commonjs`
 ```
 npm i rollup-plugin-commonjs -D
