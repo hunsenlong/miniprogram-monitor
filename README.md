@@ -25,8 +25,6 @@
 可获取用户设备信息，IP地址用于分析。
 - ### **用户网络情况监控**
 可实时监控当前用户的网络状态。
-## 更新记录
-请参考 [更新记录](./CHANGE.md)
 ## 使用
 ### 创建 Custom Application
 - 点击 `Create custom application` 开始创建
