@@ -40,9 +40,45 @@
 - 部署描点JS文件 `dynatrace-monitor-wx.js` 到 `utils` 目录下
 - 在小程序的 入口文件 `app.js(ts)` 加入初始化代码
 ```javascript
-const DYNATRACE = require('./utils/dynatrace-monitor-wx.js');
-DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版本').init();
+//原生微信开发-部署
+const Monitor = require('./utils/dynatrace-monitor-wx.js');
+const monitor = Monitor({
+  applicationName: 'applicationName',
+  applicationID: 'applicationID',
+  endpointURL: 'BeaconURL',
+  applicationVersion: '小程序版本'
+});
 ```
+```javascript
+//UNI微信开发-部署(Vue2)
+import Monitor from "@/utils/dynatrace-monitor-wx.js"
+const monitor = Monitor({
+  applicationName: 'applicationName',
+  applicationID: 'applicationID',
+  endpointURL: 'BeaconURL',
+  applicationVersion: '小程序版本'
+});
+```
+<font color="red" size="4">*UNI vue3 安装描点 注意事项</font>
+- uniapp 的 vue 3版本将不再支持 commonJS 语法，需要在vite.config.js 配置 commonjs
+- 使用 npm 安装 rollup-plugin-commonjs
+```cmd
+npm i rollup-plugin-commonjs -D
+```
+- 在 vite.config.js 加入下面配置
+```javascript
+import { defineConfig } from 'vite';
+const commonjs = require('rollup-plugin-commonjs');
+import uni from '@dcloudio/vite-plugin-uni';
+export default defineConfig({
+	plugins: [
+		uni(),
+		commonjs()
+	],
+});
+```
+
+
 根据实际的 applicationName 与 applicationID、BeaconURL 替换对应内容。可参考 [创建 Custom Application](#创建-custom-application)
 #### 配置 request 合法域名
 可根据 [创建 Custom Application](#创建-custom-application) 中获取的 BeaconURL 的域名地址，在微信小程序后台的 `开发设置` `>` `服务器域名` `>` `request合法域名` 中加入 BeaconURL 域名。
@@ -58,36 +94,72 @@ DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版�
 ### `init`
 初始化 描点
 ```javascript
-const DYNATRACE = require('./utils/dynatrace-monitor-wx.js');
+const Monitor = require('./utils/dynatrace-monitor-wx.js');
+const monitor = Monitor({
+  applicationName: 'applicationName',
+  applicationID: 'applicationID',
+  endpointURL: 'BeaconURL',
+  applicationVersion: '小程序版本'
+});
 
-const Monitor = DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版本');
-
-Monitor.init();
+monitor.init();
 ```
+### `withApplicationSecureAndKey(key, secure)`
+
+```javascript
+const Monitor = require('./utils/dynatrace-monitor-wx.js');
+const monitor = Monitor({
+  applicationName: 'applicationName',
+  applicationID: 'applicationID',
+  endpointURL: 'BeaconURL',
+  applicationVersion: '小程序版本'
+});
+
+monitor.withApplicationSecureAndKey('', '');
+
+monitor.init();
+```
+
 ### `excludeApis(apis[])`
 去除不需要监控的 Api
 ```javascript
-const Monitor = DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版本');
-Monitor.excludeApis(['/api/v1/xxx', '/api/v1/xxx']);
-Monitor.init();
+const Monitor = require('./utils/dynatrace-monitor-wx.js');
+const monitor = Monitor({
+  applicationName: 'applicationName',
+  applicationID: 'applicationID',
+  endpointURL: 'BeaconURL',
+  applicationVersion: '小程序版本'
+});
+
+monitor.excludeApis(['/api/v1/xxx', '/api/v1/xxx']);
+monitor.init();
 ```
 ### `requestTimeout(timeout=60000)`
 设置 当前SDK 的所有请求超时时间
 ```javascript
-const Monitor = DYNATRACE('applicationName', 'applicationID', 'BeaconURL', '小程序当前版本');
-Monitor.requestTimeout(6000);
-Monitor.init();
+const Monitor = require('./utils/dynatrace-monitor-wx.js');
+const monitor = Monitor({
+  applicationName: 'applicationName',
+  applicationID: 'applicationID',
+  endpointURL: 'BeaconURL',
+  applicationVersion: '小程序版本'
+});
+
+monitor.requestTimeout(6000);
+monitor.init();
 ```
+
+## zm （一个全局模块）
 ### `identifyUser(userId)`
 给当前 session 标记用户
 ```javascript
-getApp().identifyUser('xxxxx');
+zm.identifyUser('xxxxx');
 ```
 示例: 通过获取 openid 作为用户标识 
 ```javascript
 wx.login({
     success: function(response){
-        getApp().identifyUser(response.data.openid);
+        zm.identifyUser(response.data.openid);
     }
 })
 ```
@@ -95,7 +167,7 @@ wx.login({
 ### `reportValue(name, value)`
 可在当前 Page action 里定义 reportValue。 参考 [定义用户属性与操作属性](#定义用户属性与操作属性)
 ```javascript
-wx.GetCurrentPM().reportValue('name', 'value');
+zm.reportValue('name', 'value');
 ```
 示例: 上报用户登录耗时
 ```javascript
@@ -103,11 +175,61 @@ let startTime = new Date().getTime();
 wx.login({
     success: function(response){
         let endTime = new Date().getTime();
-        wx.GetCurrentPM().reportValue('用户登录耗时', (endTime - startTime) / 1000);//time .s
+        zm.reportValue('用户登录耗时', (endTime - startTime) / 1000); //time .s
     }
 })
 ```
 <font color="red">注意：该API 调用 `scope` 仅限于 onLoad、onShow、onReady</font>
+
+## 动态安装描点案例
+- 首先引入SDK进行基础性配置
+```javascript
+const Monitor = require('./utils/dynatrace-monitor-wx.js');
+const monitor = Monitor({
+  applicationName: 'applicationName',
+  applicationID: 'applicationID',
+  endpointURL: 'BeaconURL',
+  applicationVersion: '小程序版本'
+});
+```
+上面我们没有进行初始化函数调用
+
+- 进行初始化
+比如我需要在 `App` `onLaunch` 的时候调用后端API接口获取配置信息
+假设我们后端返回的JSON数据如下
+```json
+{
+    "data": {
+        "enableZmAgent": true,// 开启 ZM Agent
+        "license": {
+            "key": "xxx",
+            "secure": "xxx"
+        }
+    }
+}
+```
+在 `App.js` 代码中
+```javascript
+
+App({
+
+    onLaunch: function(){
+        wx.request({
+            success: function(response){
+                const { data } = response;
+                if(data && data.enableZmAgent){
+                    const license = license;
+                    if(license){
+                        monitor.withApplicationSecureAndKey(license.key, license.secure);
+                        monitor.init();
+                    }
+                }
+            }
+        })
+    }
+})
+
+```
 ## 端到端配置
 ### 安装 Dynatrace 探针
 - 登录Dynatrace后台管理系统。打开菜单 `Manage` > `Deploy Dynatrace`
