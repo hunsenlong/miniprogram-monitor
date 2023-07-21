@@ -1,6 +1,8 @@
 # 微信小程序监控
 
-![](https://img.shields.io/badge/node-16.x-green) ![](https://img.shields.io/badge/npm-8.x-brightgreen) ![](https://img.shields.io/badge/code%20size-105%20kb-blue)
+![](https://img.shields.io/badge/node-16.x-green) ![](https://img.shields.io/badge/npm-8.x-brightgreen) ![](https://img.shields.io/badge/code%20size-96%20kb-blue)
+
+[中文](./README.md) | [English](./README_EN.md)
 
 ## 简介
     从2017年微信首次推出小程序开始，经过四年多发展，截至2021年上半年，全网小程序数量突破700万个，呈逐年增长的趋势。
